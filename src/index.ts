@@ -6,6 +6,7 @@ import myUserRoute from "./routes/MyUserRoute"
 import { v2 as cloudinary } from 'cloudinary'
 import myRestaurantRoute from "./routes/MyRestaurantRoute"
 import RestaurantRoute from "./routes/RestaurantRoute"
+import OrderRoute from './routes/OrderRoute'
 
 mongoose
     .connect(process.env.MONGODB_CONNECTION_STRING as string)
@@ -21,9 +22,14 @@ cloudinary.config({
 const app = express();
 const port = 3000;
 
-//builtin middleware that parses request with json payloads
-app.use(express.json());
 app.use(cors());
+
+//for stripe validation, it needs to go raw request and NOT json unlike all other endpoints
+//that why express.json() middlew. placed below 
+app.use("/api/order/checkout/webhook", express.raw({ type: "*/*" }));
+
+//builtin middleware that parses request with json payloads(for all other endpoints except stripe webhook)
+app.use(express.json());
 
 //this endpoint hit for health status(deployment)
 app.get("/health", async (req: Request, res: Response) => {
@@ -32,7 +38,8 @@ app.get("/health", async (req: Request, res: Response) => {
 
 app.use("/api/my/user", myUserRoute);
 app.use("/api/my/restaurant", myRestaurantRoute);
-app.use("/api/restaurant", RestaurantRoute)
+app.use("/api/restaurant", RestaurantRoute);
+app.use("/api/order", OrderRoute);
 
 app.listen(port, () => {
     console.log("server listening at port : ", port);
