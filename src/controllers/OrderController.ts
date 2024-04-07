@@ -162,11 +162,11 @@ const createSession = async (
             orderId,
             restaurantId,
         },
-        success_url: `https://www.youtube.com/`,
+        success_url: `https://mern-food-ordering-app-frontend-962j.onrender.com`,
         // success_url: `${FRONTEND_URL}/order-status?success=true`,
         // cancel_url: `${FRONTEND_URL}/detail/${restaurantId}?cancelled=true`
         // cancel_url: `${FRONTEND_URL}`
-        cancel_url: `https://www.youtube.com/`
+        cancel_url: `https://mern-food-ordering-app-frontend-962j.onrender.com`
     });
 
     return sessionData;
