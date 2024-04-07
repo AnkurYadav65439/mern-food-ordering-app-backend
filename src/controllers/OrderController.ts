@@ -162,9 +162,11 @@ const createSession = async (
             orderId,
             restaurantId,
         },
-        success_url: `${FRONTEND_URL}/order-status`,
+        success_url: `https://www.youtube.com/`,
+        // success_url: `${FRONTEND_URL}/order-status?success=true`,
         // cancel_url: `${FRONTEND_URL}/detail/${restaurantId}?cancelled=true`
-        cancel_url: `http://localhost:5173`
+        // cancel_url: `${FRONTEND_URL}`
+        cancel_url: `https://www.youtube.com/`
     });
 
     return sessionData;
