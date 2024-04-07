@@ -23,7 +23,20 @@ type CheckoutSessionRequest = {
     restaurantId: string;
 }
 
+
 //1
+const getMyOrders = async (req: Request, res: Response) => {
+    try {
+        const orders = await Order.find({ user: req.userId }).populate("restaurant").populate("user");
+
+        res.json(orders);
+    } catch (error) {
+        console.log("error");
+        res.status(500).json({ message: "something went wrong" });
+    }
+}
+
+//2
 //used to recieve events from 3rd party(stripe), all for stripe cli on local machine to connect stripe.com(development)
 const stripeWebhookHandler = async (req: Request, res: Response) => {
     let event;
@@ -57,7 +70,7 @@ const stripeWebhookHandler = async (req: Request, res: Response) => {
     res.status(200).send();
 }
 
-//2
+//3
 const createCheckoutSession = async (req: Request, res: Response) => {
     try {
         const checkoutSessionRequest: CheckoutSessionRequest = req.body;
@@ -149,9 +162,8 @@ const createSession = async (
             orderId,
             restaurantId,
         },
-        // success_url: `${FRONTEND_URL}/order-status?success=true`,
+        success_url: `${FRONTEND_URL}/order-status?success=true`,
         // cancel_url: `${FRONTEND_URL}/detail/${restaurantId}?cancelled=true`
-        success_url: `http://localhost:5173`,
         cancel_url: `http://localhost:5173`
     });
 
@@ -159,6 +171,7 @@ const createSession = async (
 }
 
 export default {
+    getMyOrders,
     createCheckoutSession,
     stripeWebhookHandler
 }
