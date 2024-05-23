@@ -15,7 +15,7 @@ declare global {
 
 //from auth0 site's created api 
 export const jwtCheck = auth({
-    //provide this audeience in froentend auth0Provider as well
+    //provide this audience in froentend auth0Provider as well
     audience: process.env.AUTH0_AUDIENCE,
     issuerBaseURL: process.env.AUTH0_ISSUER_BASE_URL,
     tokenSigningAlg: 'RS256'
